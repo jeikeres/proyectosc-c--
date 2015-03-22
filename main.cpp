@@ -11,8 +11,9 @@
 #define  MAXLINEA 225
 #include <vector>
 #include <stdio.h> 
-#include<stdlib.h> // libreria para el uso de rand( )    
-#include<time.h>   // libreria para el uso de time( )  
+#include <stdlib.h> // libreria para el uso de rand( )    
+#include <time.h>   // libreria para el uso de time( )
+#include <unistd.h>
 
 
 using namespace std;
@@ -20,6 +21,17 @@ using namespace std;
 /*
  * 
  */
+
+string ObtenerFecha(){
+         char buffer[MAXLINEA];
+         time_t curtime;
+         struct tm *loctime;
+         curtime = time (NULL);
+         loctime = localtime (&curtime);
+         strftime (buffer, MAXLINEA, "%Y-%m-%d %H:%M;", loctime);
+         return buffer;
+}
+
 int main(int argc,char *argv[]) {
     
     if (argc > 1){
@@ -27,30 +39,31 @@ int main(int argc,char *argv[]) {
           string aux = "-v";
           string generar = "-g";
           FILE *fichero;
-          if(!aux.compare(uax)){
-          cout << "Los integrantes del grupo son : "  << endl << 
-                  "Joaquín Astudillo"  << endl << 
-                  "Roberto Esparza"    << endl << 
-                  "Jonathan Sepúlveda" << endl ;
-          }
+          if(!aux.compare(uax)){   
+          cout << "Los integrantes del grupo son : "  << endl;
+          sleep(1);
+          cout << "Joaquín Astudillo"  << endl;
+          sleep(1);
+          cout << "Roberto Esparza"    << endl;
+          sleep(1);
+          cout << "Jonathan Sepúlveda" << endl;
+                  
+          }   
           if(!generar.compare(uax)){
               fichero = fopen("qno.csv", "a+" );
-              /////////////
-              
-              
               int n = 0, c = 0;
 	
-	int random[25];
-	for(int i = 0; i < 25; i++)
+	int random[14];
+	for(int i = 0; i < 14; i++)  // dejo la cadena vacía
 		random[i] = 0;
-
+        
 	srand( time(NULL) );
 
-	while( c != 25 )
+	while( c != 14 )
 	{
 		n = (rand()%25)+1;
 
-		for( int i = 0; i < 25; i++)
+		for( int i = 0; i < 14; i++)
 		{
 			if(random[i] == n)
 				break;
@@ -64,32 +77,28 @@ int main(int argc,char *argv[]) {
 		}
 	}
         
-        for(int i = 0 ; i < 25 ; i++){
+        string buffer = ObtenerFecha();
+        
+        fprintf(fichero,"%s",buffer.c_str());
+        
+        for(int i = 0 ; i < 14 ; i++){
         int au = random[i];
         fprintf(fichero,"%d;",au);
-        //fputs(au, fichero );
         }
-        
-        fprintf(fichero,"\n");
-              
-              
-              
-              ////////////
+          
+          fprintf(fichero,"\n");
               fclose(fichero);
-              cout << "el archivo ha sido generado" << endl;
-          }
-          else{
-          cout << "el argumento no es válido intentelo nuevamente."  << endl;    
+              cout << "sorteando los números..." << endl;
+              sleep(1);
+              cout << "..." << endl;
+              sleep(1);
+              cout << "..." << endl;
+              sleep(1);
+              cout << "listo hemos generado el ganador! " << endl;
           }
           }else{
           cout << "El comando ingresado no lleva ningún argumento." << endl;
-          }
-    
-         
-    
-         
-          
-          
+          }         
 
   return 0;
     
